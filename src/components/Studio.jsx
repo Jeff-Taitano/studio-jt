@@ -2,12 +2,17 @@ import { useGLTF } from '@react-three/drei';
 import { useBox } from '@react-three/cannon';
 
 function Wall({ position }) {
-  useBox(() => ({
+  const [ref] = useBox(() => ({
     type: 'Static',
-    args: [1, 1, 1],
+    args: [1, 1, 1], // Adjust size based on your wall geometry
     position,
   }));
-  return null;
+  return (
+    <mesh ref={ref}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="gray" />
+    </mesh>
+  );
 }
 
 function Studio() {
