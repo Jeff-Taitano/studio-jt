@@ -4,12 +4,12 @@ import { useBox } from '@react-three/cannon';
 function Wall({ position }) {
   const [ref] = useBox(() => ({
     type: 'Static',
-    args: [1, 1, 1], // Adjust size based on your wall geometry
+    args: [1, 5, 0.2], // Adjusted for typical wall: width=1, height=5, depth=0.2
     position,
   }));
   return (
-    <mesh ref={ref}>
-      <boxGeometry args={[1, 1, 1]} />
+    <mesh ref={ref} visible={false}> {/* Invisible for now */}
+      <boxGeometry args={[1, 5, 0.2]} />
       <meshStandardMaterial color="gray" />
     </mesh>
   );
@@ -17,14 +17,15 @@ function Wall({ position }) {
 
 function Studio() {
   const { scene } = useGLTF('/models/studio.glb');
+  const walls = scene.children.filter(
+    (child) => child.isMesh && child.name.toLowerCase().includes('wall')
+  );
   return (
     <>
       <primitive object={scene} />
-      {scene.children
-        .filter((child) => child.isMesh && child.name.includes('wall'))
-        .map((child, index) => (
-          <Wall key={index} position={child.position.toArray()} />
-        ))}
+      {walls.map((child, index) => (
+        <Wall key={index} position={child.position.toArray()} />
+      ))}
     </>
   );
 }
