@@ -1,18 +1,27 @@
 import { useGLTF } from '@react-three/drei';
 import { useBox } from '@react-three/cannon';
 
+function Wall({ position }) {
+  useBox(() => ({
+    type: 'Static',
+    args: [1, 1, 1],
+    position,
+  }));
+  return null;
+}
+
 function Studio() {
   const { scene } = useGLTF('/models/studio.glb');
-  scene.traverse((child) => {
-    if (child.isMesh && child.name.includes('wall')) {
-      useBox(() => ({
-        type: 'Static',
-        args: [1, 1, 1], // Adjust based on mesh size
-        position: child.position,
-      }));
-    }
-  });
-  return <primitive object={scene} />;
+  return (
+    <>
+      <primitive object={scene} />
+      {scene.children
+        .filter((child) => child.isMesh && child.name.includes('wall'))
+        .map((child, index) => (
+          <Wall key={index} position={child.position.toArray()} />
+        ))}
+    </>
+  );
 }
 
 export default Studio;
