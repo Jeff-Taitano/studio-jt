@@ -4,8 +4,10 @@ import { Suspense } from 'react';
 import { Html, PointerLockControls } from '@react-three/drei';
 import Studio from './components/Studio';
 import Player from './components/Player';
+import PortfolioScreen from './components/PortfolioScreen';
 
 function ContactForm() {
+  // No R3F hooks here, just HTML
   return (
     <form name="contact" method="POST" data-netlify="true" style={{ background: 'white', padding: 10 }}>
       <input type="hidden" name="form-name" value="contact" />
@@ -20,7 +22,7 @@ function ContactForm() {
 function App() {
   return (
     <div style={{ height: '100vh', width: '100vw', position: 'relative' }}>
-      {/* HTML elements outside Canvas */}
+      {/* Contact form rendered in 3D space */}
       <Html style={{ position: 'absolute', top: 10, right: 10 }}>
         <ContactForm />
       </Html>
@@ -31,6 +33,7 @@ function App() {
             <spotLight position={[10, 10, 10]} angle={0.3} castShadow />
             <Studio />
             <Player />
+            <PortfolioScreen url="https://your-portfolio-link.com" />
             <PointerLockControls />
           </Physics>
         </Suspense>
